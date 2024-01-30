@@ -1,0 +1,79 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    var dummyImage = "~/images/book-cover.jpeg";
+}
+
+<Partial name="_NavBarPartial" />
+
+
+<div class="container">
+    <div class="text-center">
+        <br/>
+        <br/>
+        <br />
+        <br />
+        
+        <div class="tabs">
+            <span class="boldMe">What interest you?</span>
+            <div class="tab-panel">
+                @foreach(var tab in Model.Tabs)
+                {
+                    <div class="tab-box">
+                        <span>@tab.Key</span>
+                        <div class="tab-category">
+                            @foreach(var tabBtn in tab.Value)
+                            {
+                                <a href="#">@tabBtn</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="new-release">
+           <div class="pull-left">
+                <span class="boldMe">New Release</span>&nbsp; <span>Books @Model.NewRelease.Books</span>&nbsp; <span>CDs @Model.NewRelease.CDs</span>
+           </div>
+           <div class="book-list-panel">
+                @foreach (var book in Model.NewRelease.BookList)
+                {
+                    <div class="book-card">
+                        @{
+                            var imgUrl = book.PhotoUrl.Equals("") ? @dummyImage : book.PhotoUrl;
+                        }
+                        <div class="book-portrait"><img src="@imgUrl" asp-append-version="true" /></div>
+                        <div style="color: black;" class="boldMe">@book.Title</div>
+                        <div style="color: black;" class="boldMe">@book.Genre</div>
+                        <div style="color: #333333;">@book.AuthorName</div>
+                        @for (var i = 1; i <= 5; i++)
+                        {
+                            if (i > book.Stars)
+                            {
+                                <i class="fa-solid fa-star" style="color:#cccccc;"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-star" style="color: black"></i>
+                            }
+                        }
+                        <div style="color: #bbbbbb;">
+                            @if (@book.AvailabilityStatus)
+                            {
+                                <span>Available</span>
+                            }
+                            else
+                            {
+                                <span>Not-Available</span>
+                            }
+                        </div>
+
+                    </div>
+                }
+           </div>
+        </div>
+    </div>
+</div>
+
+
